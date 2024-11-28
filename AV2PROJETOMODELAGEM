@@ -1,0 +1,83 @@
+-- Tabela Condomínio
+CREATE TABLE Condominio (
+    idCondominio INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    endereco VARCHAR(50) NOT NULL,
+    num INT NOT NULL,
+    cep VARCHAR(15) NOT NULL,
+    bairro VARCHAR(30) NOT NULL,
+    cidade VARCHAR(20) NOT NULL,
+    estado VARCHAR(15) NOT NULL,
+    proprietario VARCHAR(45) NOT NULL,
+    cnpj VARCHAR(15) NOT NULL
+);
+
+-- Tabela Morador
+CREATE TABLE Morador (
+    idMorador INT AUTO_INCREMENT PRIMARY KEY,
+    bloco VARCHAR(10) NOT NULL,
+    numApart INT NOT NULL,
+    valorAluguel FLOAT NOT NULL,
+    Condominios_idCondominio INT NOT NULL,
+    FOREIGN KEY (Condominios_idCondominio) REFERENCES Condominio(idCondominio)
+);
+
+-- Tabela Síndico
+CREATE TABLE Sindico (
+    idSindico INT AUTO_INCREMENT PRIMARY KEY,
+    inicioMandato DATETIME NOT NULL,
+    fimMandato DATETIME NOT NULL,
+    Condominios_idCondominio INT NOT NULL,
+    FOREIGN KEY (Condominios_idCondominio) REFERENCES Condominio(idCondominio)
+);
+
+-- Tabela Condôminos
+CREATE TABLE Condominos (
+    idCondomino INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(50) NOT NULL,
+    cpf VARCHAR(15) NOT NULL UNIQUE,
+    email VARCHAR(50) NOT NULL,
+    senha VARCHAR(50) NOT NULL,
+    user VARCHAR(15) NOT NULL,
+    Condominios_idCondominio INT NOT NULL,
+    FOREIGN KEY (Condominios_idCondominio) REFERENCES Condominio(idCondominio)
+);
+
+-- Tabela Tarefas
+CREATE TABLE Tarefas (
+    idTarefa INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(45) NOT NULL,
+    status VARCHAR(15) NOT NULL,
+    dataConclusao DATE,
+    descricao VARCHAR(45),
+    Condominios_idCondominio INT NOT NULL,
+    FOREIGN KEY (Condominios_idCondominio) REFERENCES Condominio(idCondominio)
+);
+
+-- Tabela Portaria
+CREATE TABLE Portaria (
+    idPortaria INT AUTO_INCREMENT PRIMARY KEY,
+    portaria VARCHAR(20) NOT NULL,
+    Condominio_idCondominio INT NOT NULL,
+    FOREIGN KEY (Condominio_idCondominio) REFERENCES Condominio(idCondominio)
+);
+
+-- Tabela Mensagem
+CREATE TABLE Mensagem (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    destinatario VARCHAR(50) NOT NULL,
+    mensagem VARCHAR(255) NOT NULL,
+    Condominios_idCondominio INT,
+    Portaria_idPortaria INT,
+    FOREIGN KEY (Condominios_idCondominio) REFERENCES Condominio(idCondominio),
+    FOREIGN KEY (Portaria_idPortaria) REFERENCES Portaria(idPortaria)
+);
+
+-- Tabela Solicitações
+CREATE TABLE Solicitacoes (
+    idSolicitacao INT AUTO_INCREMENT PRIMARY KEY,
+    solicitacao VARCHAR(50) NOT NULL,
+    justificativa VARCHAR(60),
+    Condominios_idCondominio INT NOT NULL,
+    FOREIGN KEY (Condominios_idCondominio) REFERENCES Condominio(idCondominio)
+);
